@@ -2,7 +2,8 @@ import TamilSummaryBox from "@/components/TamilSummaryBox";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AREAS } from "@/lib/areas";
-import { SERVICE_GROUPS, getService, type ServiceSummary } from "@/lib/services";
+import { getService, type ServiceSummary } from "@/lib/services";
+import ContentAttribution from "@/components/ContentAttribution";
 import CTASection from "@/components/CTASection";
 import FAQSection from "@/components/FAQSection";
 import GoogleReviews from "@/components/GoogleReviews";
@@ -12,7 +13,6 @@ import TrackedAnchor from "@/components/TrackedAnchor";
 import StageMatrix from "@/components/StageMatrix";
 import { JsonLd, moneyPageGraph } from "@/lib/schema";
 import { CalcSticker, CoinSticker, Ribbon, StarSticker } from "@/components/Stickers";
-import { ALL_SERVICES } from "@/lib/services";
 import { PAGE_DATES } from "@/lib/page-dates";
 import {
   ADDRESS_FULL,
@@ -63,6 +63,14 @@ const TRUST_FACTS = [
 ];
 
 const HOME_FAQS = [
+  {
+    question: "What services does a CA firm in Chennai provide?",
+    answer: "C S Rushil & Co. handles company registration, GST registration and returns, income tax, statutory and tax audit, ROC compliance and virtual CFO work from Anna Nagar, Chennai. The appropriate service depends on your entity, transactions and deadlines; the scope is agreed before an engagement begins.",
+  },
+  {
+    question: "How do I verify a Chartered Accountant in India?",
+    answer: "Ask for the CA's ICAI membership number, Certificate of Practice details and the firm's registration number. Use ICAI's Trace a Member service to check the member's identity, and contact ICAI for firm or practice-status verification. A professional biography or online review is not a substitute for these checks.",
+  },
   {
     question: "How do I find a chartered accountant near me in Chennai for company registration?",
     answer:
@@ -119,9 +127,13 @@ const CHOOSING_CRITERIA: { title: string; text: string; firmFact?: string }[] = 
   },
 ];
 
-// One card per service group: descriptive links to every service plus a
-// single WhatsApp enquiry for the group. (One button per group instead of per
-// service keeps the homepage HTML and RSC payload small.)
+// Priority hubs own broad service intent; each hub links to specialist pages.
+const HOME_SERVICES = [
+  "company-registration-chennai", "goods-and-services-tax", "direct-tax",
+  "audit-and-assurance", "virtual-cfo-services", "roc-compliances",
+  "nri-tax-services", "outsourced-bookkeeping-services",
+].map(getService).filter((s): s is ServiceSummary => Boolean(s));
+
 function ServiceGroupCard({ label, services }: { label: string; services: ServiceSummary[] }) {
   return (
     <div className="flex flex-col rounded-cards border border-carbon bg-white p-7">
@@ -148,10 +160,11 @@ function ServiceGroupCard({ label, services }: { label: string; services: Servic
 }
 
 const QUICK_LINKS = [
-  ["Private Limited Company Registration", "private-limited-company-incorporation-chennai"],
-  ["GST Litigation & Appeals", "gst-litigation-chennai"],
+  ["Company Registration in Chennai", "company-registration-chennai"],
+  ["GST Consultants in Chennai", "goods-and-services-tax"],
+  ["Income Tax in Chennai", "direct-tax"],
   ["Virtual CFO in Chennai", "virtual-cfo-services"],
-  ["Statutory & Tax Audit", "statutory-audit-chennai"],
+  ["Audit & Assurance", "audit-and-assurance"],
 ];
 
 export default function HomePage() {
@@ -168,7 +181,7 @@ export default function HomePage() {
             serviceType: "Chartered Accountancy Services",
             description:
               "Company and LLP registration, GST and GST litigation, income tax, statutory and tax audit, ROC compliance and virtual CFO services from a CA firm in Anna Nagar, Chennai.",
-            offers: ALL_SERVICES.map((s) => ({ name: s.name, url: `${SITE_URL}/${s.slug}` })),
+            offers: HOME_SERVICES.map((s) => ({ name: s.name, url: `${SITE_URL}/${s.slug}` })),
           },
           faqs: HOME_FAQS,
           crumbs: [],
@@ -187,12 +200,13 @@ export default function HomePage() {
               CA Firm in Chennai — Chartered Accountants for Tax, GST, Audit &amp; Incorporation
             </h1>
             <p id="lead-answer" className="mt-6 max-w-xl text-lg leading-relaxed text-carbon">
-              Looking for a <strong>CA firm in Chennai</strong>? {BUSINESS_NAME} is a{" "}
+              {BUSINESS_NAME} is a <strong>CA firm in Chennai</strong>, a{" "}
               <strong>chartered accountancy firm</strong> in J-Block, Anna Nagar, led by {FOUNDER_NAME}. Our{" "}
               {TEAM_SIZE}-member team handles <strong>Private Limited Company registration</strong>,{" "}
-              <strong>GST litigation and appeals</strong>, <strong>virtual CFO</strong> work, audit and income tax for
-              businesses, professionals and NRIs across Chennai.
+              <strong>GST registration, returns and notices</strong>, <strong>virtual CFO</strong> work, audit and income tax.
+              Our only office is in Anna Nagar; businesses, professionals and NRIs can consult in person or online.
             </p>
+            <ContentAttribution path="/" updated={PAGE_DATES["/"]} />
             <div className="mt-8 flex flex-wrap gap-3">
               <TrackedAnchor
                 action="book"
@@ -236,7 +250,7 @@ export default function HomePage() {
             </div>
             <dl className="mt-10 grid max-w-md grid-cols-3 gap-3">
               {[
-                ["16", "Professionals", "bg-white"],
+                [String(TEAM_SIZE), "Professionals", "bg-white"],
                 ["8+", "Service lines", "bg-lavender"],
                 ["Anna Nagar", "Chennai office", "bg-mint-pop"],
               ].map(([value, label, bg]) => (
@@ -260,7 +274,7 @@ export default function HomePage() {
         <ul className="container-page flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] font-bold uppercase tracking-[0.032em] text-carbon">
           {[
             `Established ${YEAR_FOUNDED}`,
-            "16-member team",
+            `${TEAM_SIZE}-member team`,
             `Led by ${FOUNDER_NAME} (${FOUNDER_CREDENTIALS})`,
             ...(ICAI_MEMBERSHIP_NO ? [`ICAI membership no. ${ICAI_MEMBERSHIP_NO}`] : []),
             ...(FIRM_REGISTRATION_NO ? [`Firm registration no. ${FIRM_REGISTRATION_NO}`] : []),
@@ -292,12 +306,7 @@ export default function HomePage() {
             notices, in person in Chennai or remotely for NRIs and overseas businesses.
           </p>
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {SERVICE_GROUPS.map((group) => {
-              const services = group.slugs
-                .map((slug) => getService(slug))
-                .filter((s): s is ServiceSummary => Boolean(s));
-              return services.length > 0 ? <ServiceGroupCard key={group.label} label={group.label} services={services} /> : null;
-            })}
+            {HOME_SERVICES.map((service) => <ServiceGroupCard key={service.slug} label={service.name} services={[service]} />)}
           </div>
         </div>
       </section>
@@ -331,7 +340,8 @@ export default function HomePage() {
             >
               how to choose a CA firm in Chennai
             </Link>
-            .
+            . For membership checks, use{" "}
+            <a href="https://traceamember.icai.org/" target="_blank" rel="noopener noreferrer" className="font-medium text-royal-violet underline underline-offset-4">ICAI&apos;s Trace a Member service</a>.
           </p>
         </div>
       </section>

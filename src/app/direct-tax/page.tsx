@@ -106,6 +106,7 @@ export default function Page() {
       crumbHref="/direct-tax"
       eyebrow="Direct Tax · Chennai"
       h1="Direct Tax and Income Tax Consultants in Chennai"
+      lead="C S Rushil & Co. provides income tax return preparation, tax planning, TDS compliance and notice-response support from Anna Nagar, Chennai. The work starts with your income sources, taxpayer status and the year concerned. Individuals, businesses and NRIs can consult at the office or online, with the scope agreed before work starts."
       subhead="Return filing, tax planning, TDS, tax audit, notices, assessments and appeals for individuals, NRIs, firms and companies, from our Anna Nagar office."
       introHeading="What do income tax consultants in Chennai handle?"
       intro="As income tax consultants in Chennai, we handle every part of direct tax for individuals, NRIs, firms and companies: income tax returns, advance tax, TDS returns, tax audit, replies to notices, scrutiny assessments and appeals. From 1 April 2026, the Income-tax Act, 2025 replaces the 1961 Act, renumbering most sections and forms, so we work under both."

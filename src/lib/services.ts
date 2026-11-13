@@ -25,7 +25,7 @@ export const SERVICES: ServiceSummary[] = [
     slug: "company-registration-chennai",
     name: "Company Registration",
     shortDescription:
-      "Fast-tracked Private Limited and LLP company registration in Chennai, from name approval to certificate of incorporation.",
+      "Private Limited and LLP registration in Chennai, covering structure selection, documents, name approval and incorporation filings.",
   },
   {
     slug: "gst-litigation-chennai",

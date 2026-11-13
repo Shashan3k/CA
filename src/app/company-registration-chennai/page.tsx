@@ -89,6 +89,7 @@ export default function Page() {
       crumbHref="/company-registration-chennai"
       eyebrow="Company Registration · Chennai"
       h1="Company Registration Service in Chennai"
+      lead="C S Rushil & Co. helps Chennai founders choose a business structure and prepare incorporation documents from its Anna Nagar office. Company incorporation uses MCA's SPICe+ process; LLPs follow a separate filing process. Start with the proposed owners, business activity and office documents so the applicable route and requirements can be checked."
       subhead="Private Limited, LLP, OPC, Section 8, partnership and proprietorship set-ups: name approval, MCA filing and the first-year compliance calendar, handled by a chartered accountant firm in Anna Nagar."
       introHeading="What does our company registration service in Chennai cover?"
       intro="Our company registration service in Chennai covers Private Limited companies, LLPs, OPCs, Section 8 companies, partnership firms and proprietorships. We obtain DSCs, reserve the name, file SPICe+ or FiLLiP, and set up PAN, TAN, the bank account and post-incorporation filings. With documents ready, a Pvt Ltd typically takes 7–12 working days and an LLP 10–15."

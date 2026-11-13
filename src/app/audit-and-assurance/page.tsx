@@ -67,6 +67,7 @@ export default function Page() {
       crumbHref="/audit-and-assurance"
       eyebrow="Audit · Chennai"
       h1="Auditors in Chennai"
+      lead="C S Rushil & Co. provides statutory, tax, internal and other audit services from Anna Nagar, Chennai. The required audit depends on your entity type, financial year, transactions and applicable law. An engagement begins with an independence check and an agreed scope, followed by document review, audit procedures and the relevant report."
       subhead="Statutory, tax, internal, stock, transfer pricing and trust audits from one Anna Nagar practice, so your audits share one set of reconciled numbers instead of three."
       introHeading="Which audits do auditors in Chennai carry out, and which one does your business need?"
       intro="Auditors in Chennai carry out statutory audits for every company, tax audits once turnover crosses ₹1 crore (₹10 crore for low-cash businesses), internal audits for larger companies under Section 138, and transfer pricing, stock and trust audits where the law or a lender requires them. Which audit you need depends on your entity type, turnover and transactions."

@@ -28,7 +28,7 @@
 - Role: Founder & Managing Partner, practising Chartered Accountant (member of the Institute of Chartered Accountants of India)
 - Credentials: ICAI Certificate in Forensic Accounting and Fraud Detection (FAFD); Start-up Mentor
 - LinkedIn: https://in.linkedin.com/in/rushil-cs
-- Reviews every service page on the website (shown as "Reviewed by CA Rushil C S" with the update date)
+- Professional review attribution is shown only when a dated sign-off is recorded; a content update is not a professional review.
 
 ## Core service 1: CA Firm in Chennai
 - URL: https://www.csrushil.com/

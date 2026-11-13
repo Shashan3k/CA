@@ -1,5 +1,6 @@
 import { AREAS } from "./areas";
 import { ALL_SERVICES } from "./services";
+import { getContentReview } from "./content-reviews";
 import {
   ADDRESS,
   BUSINESS_HOURS,
@@ -109,7 +110,6 @@ export function organizationSchema() {
     email: EMAIL,
     foundingDate: `${YEAR_FOUNDED}`,
     knowsLanguage: LANGUAGES_SPOKEN,
-    priceRange: "₹₹",
     founder: { "@id": PERSON_ID },
     employee: { "@id": PERSON_ID },
     numberOfEmployees: { "@type": "QuantitativeValue", value: TEAM_SIZE },
@@ -305,8 +305,9 @@ export function websiteSchema() {
   };
 }
 
-// Who reviewed a page and when: E-E-A-T signal for search and AI engines.
-export function webPageReviewSchema(path: string, name: string, date: string) {
+// Content modification and professional review are separate facts.
+export function webPageSchema(path: string, name: string, date: string) {
+  const review = getContentReview(path, date);
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -315,9 +316,8 @@ export function webPageReviewSchema(path: string, name: string, date: string) {
     name,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@id": `${SITE_URL}/#organization` },
-    author: { "@id": PERSON_ID },
-    reviewedBy: { "@id": PERSON_ID },
-    lastReviewed: date,
+    publisher: { "@id": ORG_ID },
+    ...(review && { reviewedBy: { "@id": PERSON_ID }, lastReviewed: review.reviewedOn }),
     dateModified: date,
   };
 }
@@ -349,8 +349,7 @@ export function siteGraph() {
   return graph([organizationSchema(), personSchema(), websiteSchema()]);
 }
 
-// One connected graph for a money page: WebPage (authored and reviewed by
-// CA Rushil C S) → Service (with its offer catalogue) → FAQPage and
+// One connected graph for a money page: WebPage → Service → FAQPage and
 // BreadcrumbList. Pages using it pass schema={false} to Breadcrumbs,
 // FAQSection and PageHero so no node is emitted twice.
 export function moneyPageGraph(opts: {
@@ -368,6 +367,7 @@ export function moneyPageGraph(opts: {
   const pageId = `${url}#webpage`;
   const serviceId = `${url}#service`;
   const crumbs = [{ name: "Home", href: "/" }, ...opts.crumbs.filter((c) => c.href !== "/")];
+  const review = getContentReview(opts.path, opts.dateModified);
   return graph([
     {
       "@type": "WebPage",
@@ -379,10 +379,10 @@ export function moneyPageGraph(opts: {
       isPartOf: { "@id": WEBSITE_ID },
       about: { "@id": ORG_ID },
       mainEntity: { "@id": serviceId },
-      author: { "@id": PERSON_ID },
-      reviewedBy: { "@id": PERSON_ID },
+      publisher: { "@id": ORG_ID },
+      ...(review && { reviewedBy: { "@id": PERSON_ID }, lastReviewed: review.reviewedOn }),
       breadcrumb: { "@id": `${url}#breadcrumb` },
-      ...(opts.dateModified && { dateModified: opts.dateModified, lastReviewed: opts.dateModified }),
+      ...(opts.dateModified && { dateModified: opts.dateModified }),
       ...(opts.speakable && { speakable: { "@type": "SpeakableSpecification", cssSelector: opts.speakable } }),
     },
     {
@@ -416,7 +416,7 @@ export function JsonLd({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
     />
   );
 }
